@@ -1,0 +1,24 @@
+{
+  "event_id": "evt_20260413_000001",
+  "event_type": "MARKET_SHOCK",
+  "priority": "P0",
+  "scope": "UNDERLYING",
+  "effective_at": "2026-04-13T09:30:01Z",
+  "source": "market-data-gateway",
+  "underlyings": [
+    "AAPL"
+  ],
+  "account_ids": [],
+  "version_hints": {
+    "market_data_version": "md_20260413_093001",
+    "pricing_model_version": "pm_1_0_0"
+  },
+  "payload": {
+    "spot_move_pct": -0.041,
+    "iv_move_abs": 0.062,
+    "reason": "opening gap down",
+    "impacted_product_groups": [
+      "US_TECH_SINGLE_STOCK_OPTIONS"
+    ]
+  }
+}
