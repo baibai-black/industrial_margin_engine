@@ -1,0 +1,27 @@
+{
+  "task_id": "task_20260413_000001",
+  "event_id": "evt_20260413_000001",
+  "scope": "UNDERLYING",
+  "artifacts": [
+    "VOL_SURFACE",
+    "PRICE_VOL_MATRIX",
+    "ACCOUNT_MARGIN",
+    "MARGIN_SNAPSHOT"
+  ],
+  "underlyings": [
+    "AAPL"
+  ],
+  "account_ids": [
+    "ACC10001",
+    "ACC10002"
+  ],
+  "version_bundle": {
+    "market_data_version": "md_20260413_093001",
+    "vol_surface_version": "vs_pending",
+    "dividend_curve_version": "dc_20260413_090000",
+    "rate_curve_version": "rc_20260413_090000",
+    "scenario_set_version": "ss_12",
+    "margin_rule_version": "mr_7",
+    "pricing_model_version": "pm_1_0_0"
+  }
+}
