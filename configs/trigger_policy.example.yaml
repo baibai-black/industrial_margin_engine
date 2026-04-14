@@ -1,0 +1,90 @@
+event_priority:
+  MARKET_SHOCK: P0
+  VOL_SURFACE_CHANGED: P0
+  RATE_CURVE_CHANGED: P1
+  DIVIDEND_CURVE_CHANGED: P1
+  CORPORATE_ACTION_ANNOUNCED: P1
+  CORPORATE_ACTION_EFFECTIVE: P0
+  MARGIN_CONFIG_CHANGED: P0
+  OFFSET_MAPPING_CHANGED: P0
+  CONCENTRATION_CONFIG_CHANGED: P0
+  POSITION_CHANGED: P0
+  EXERCISE_ASSIGNMENT_CHANGED: P0
+  ACCOUNT_TRANSFER_CHANGED: P1
+  EOD_CYCLE_STARTED: P1
+  MANUAL_RECALC_REQUESTED: P0
+
+dedupe_windows_ms:
+  MARKET_SHOCK: 1000
+  VOL_SURFACE_CHANGED: 1000
+  POSITION_CHANGED: 0
+  MARGIN_CONFIG_CHANGED: 0
+  CORPORATE_ACTION_EFFECTIVE: 0
+
+thresholds:
+  market_shock:
+    minor_spot_move_pct: 0.005
+    major_spot_move_pct: 0.03
+    major_iv_move_abs: 0.05
+  cache_warmup:
+    hot_underlying_position_count: 100
+    hot_underlying_margin_notional: 5000000
+
+routing:
+  MARKET_SHOCK:
+    default_artifacts:
+      - PRICE_VOL_MATRIX
+      - ACCOUNT_MARGIN
+      - MARGIN_SNAPSHOT
+    escalate_if:
+      - spot_move_pct >= thresholds.market_shock.major_spot_move_pct
+      - iv_move_abs >= thresholds.market_shock.major_iv_move_abs
+    escalated_artifacts:
+      - VOL_SURFACE
+      - PRICE_VOL_MATRIX
+      - ACCOUNT_MARGIN
+      - MARGIN_SNAPSHOT
+  VOL_SURFACE_CHANGED:
+    default_artifacts:
+      - VOL_SURFACE
+      - PRICE_VOL_MATRIX
+      - ACCOUNT_MARGIN
+      - MARGIN_SNAPSHOT
+  RATE_CURVE_CHANGED:
+    default_artifacts:
+      - RATE_CURVE
+      - PRICE_VOL_MATRIX
+      - ACCOUNT_MARGIN
+  DIVIDEND_CURVE_CHANGED:
+    default_artifacts:
+      - DIVIDEND_CURVE
+      - PRICE_VOL_MATRIX
+      - ACCOUNT_MARGIN
+  CORPORATE_ACTION_EFFECTIVE:
+    default_artifacts:
+      - CONTRACT_RULES
+      - DIVIDEND_CURVE
+      - VOL_SURFACE
+      - PRICE_VOL_MATRIX
+      - ACCOUNT_MARGIN
+      - MARGIN_SNAPSHOT
+  POSITION_CHANGED:
+    default_artifacts:
+      - ACCOUNT_MARGIN
+      - MARGIN_SNAPSHOT
+    warmup_if_missing_underlying_cache: true
+
+execution:
+  dependency_order:
+    - RATE_CURVE
+    - DIVIDEND_CURVE
+    - VOL_SURFACE
+    - CONTRACT_RULES
+    - PRICE_VOL_MATRIX
+    - ACCOUNT_MARGIN
+    - MARGIN_SNAPSHOT
+    - LIQUIDATION_ALERT
+  stale_snapshot_policy:
+    allow_read: true
+    allow_liquidation_guardrail: true
+    require_version_bundle: true
