@@ -1,0 +1,17 @@
+[project]
+name = "industrial-margin-engine"
+version = "0.2.0"
+description = "Runnable event-driven demo for industrial margin calculation."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.scripts]
+margin-engine-demo = "margin_engine.server:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
